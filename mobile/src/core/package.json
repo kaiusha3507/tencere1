@@ -1,0 +1,1 @@
+{ "type": "module", "private": true, "description": "Platformdan bağımsız çekirdek: Node.js (testler, API) ve Metro (mobil) aynı kodu kullanır." }

@@ -1,0 +1,7 @@
+node_modules/
+.env
+api/.env
+mobile/.env
+scripts/harness/dist/
+tests/e2e/screenshots/
+*.log

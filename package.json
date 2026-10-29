@@ -1,0 +1,23 @@
+{
+  "name": "tencere-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tencere — çekirdek testleri ve isteğe bağlı API sunucusu. Mobil uygulama mobile/ klasöründedir.",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "test": "node --disable-warning=ExperimentalWarning --test \"tests/**/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json",
+    "validate:data": "node --disable-warning=ExperimentalWarning scripts/validate-data.ts",
+    "api": "node --disable-warning=ExperimentalWarning api/server.ts",
+    "check": "npm run typecheck && npm run typecheck:ui && npm run validate:data && npm test",
+    "test:e2e": "node scripts/harness/build.mjs && node tests/e2e/mobile-ui.e2e.mjs",
+    "typecheck:ui": "tsc -p scripts/harness/tsconfig.ui.json"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}
