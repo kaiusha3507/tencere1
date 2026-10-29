@@ -14,8 +14,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Veri seti ve testler
@@ -31,11 +31,11 @@ jobs:
       run:
         working-directory: mobile
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
@@ -44,21 +44,23 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p ../ci-logs
-          npm install 2>&1 | tee ../ci-logs/1-npm-install.log
-          npx expo install react react-native react-native-safe-area-context react-native-svg expo-sqlite expo-clipboard expo-status-bar 2>&1 | tee ../ci-logs/2-expo-install.log
+          npm install --no-audit --no-fund 2>&1 | tee ../ci-logs/1-npm-install.log
+          node ../scripts/pin-expo-deps.mjs 2>&1 | tee ../ci-logs/2-pin.log
+          rm -rf node_modules package-lock.json
+          npm install --no-audit --no-fund 2>&1 | tee ../ci-logs/3-npm-install-pinned.log
       - name: Expo uyumluluk kontrolü (bilgi amaçlı)
         run: npx expo-doctor@latest || true
       - name: Android projesini oluştur
         shell: bash
         run: |
           set -o pipefail
-          npx expo prebuild --platform android --clean 2>&1 | tee ../ci-logs/3-prebuild.log
+          npx expo prebuild --platform android --clean 2>&1 | tee ../ci-logs/4-prebuild.log
       - name: APK derle
         working-directory: mobile/android
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew assembleRelease --no-daemon 2>&1 | tee ../../ci-logs/4-gradle.log
+          ./gradlew assembleRelease --no-daemon 2>&1 | tee ../../ci-logs/5-gradle.log
       - name: APK'yı adlandır
         run: cp android/app/build/outputs/apk/release/app-release.apk ../tencere-${{ github.run_number }}.apk
       - name: Release olarak yayınla (telefondan indirilebilir)
