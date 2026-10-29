@@ -19,7 +19,11 @@ call npm install
 if errorlevel 1 goto hata
 echo.
 echo  [2/2] Expo SDK ile uyumlu kutuphaneler kuruluyor...
-call npx expo install react react-native react-native-safe-area-context react-native-svg expo-sqlite expo-clipboard expo-status-bar
+call node ..\scripts\pin-expo-deps.mjs
+if errorlevel 1 goto hata
+rmdir /s /q node_modules
+del /q package-lock.json 2>nul
+call npm install
 if errorlevel 1 goto hata
 echo.
 echo  Kurulum tamamlandi. Uygulamayi baslatmak icin "baslat.bat" dosyasina cift tiklayin.

@@ -77,7 +77,9 @@ Elle yapmak isterseniz (Komut İstemi'nde):
 ```bat
 cd Belgeler\tencere\mobile
 npm install
-npx expo install react react-native react-native-safe-area-context react-native-svg expo-sqlite expo-clipboard expo-status-bar
+node ..\scripts\pin-expo-deps.mjs
+rmdir /s /q node_modules
+npm install
 ```
 
 ---
